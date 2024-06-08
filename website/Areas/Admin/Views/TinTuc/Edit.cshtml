@@ -1,0 +1,64 @@
+﻿@model website.Models.TinTuc
+
+@{
+    ViewBag.Title = "Sửa tin tức";
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+}
+@using (Ajax.BeginForm("Edit", "TinTuc", null,
+                       new AjaxOptions
+                       {
+                           HttpMethod = "Post",
+                           OnSuccess = "onAddSuccess",
+                           UpdateTargetId = "response",
+                           InsertionMode = InsertionMode.Replace,
+                       },
+                       new { enctype = "multipart/form-data" }
+                       ))
+{
+    <input name="Id" value="@Model.Id" hidden />
+    <input name="AnhDaiDien" value="@Model.AnhDaiDien" hidden />
+    <input name="NgayDang" value="@Model.NgayDang" hidden />
+    <div class="dialog-model"></div>
+    <div class="dialog-content">
+        <div class="dialog-header">
+            <div class="header-content">THÔNG TIN TIN TỨC</div>
+        </div>
+        <div class="dialog-main">
+            <div class="dialog-grid">
+                <div class="dialog-grid-center">
+                    <div class="grid-title">
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Tiêu đề(<span style="color: red">*</span>)</label>
+                        @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="infor-details">
+                        <label for="txthoTen">Ảnh đại diện(<span style="color: red">*</span>)</label>
+                        <input type="file" name="AnhDaiDien" class="form-control" />
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Nội dung(<span style="color: red">*</span>)</label>
+                        <textarea rows="10" name="NoiDung" id="MoTa" class="form-control">@Model.NoiDung</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-footer">
+            <a class="btn btn-success" style="color:white" onclick="closedialog()">Hủy</a> &nbsp;
+            <button class="btn btn-primary" type="submit">Lưu</button>
+        </div>
+    </div>
+
+}
+<script>
+    if ($('#MoTa').length > 0) {
+        CKEDITOR.replace("MoTa", {
+            language: 'vi',
+            filebrowserBrowseUrl: "/Areas/Admin/assets/js/ckfinder/ckfinder.html",
+            filebrowserImageBrowseUrl: '/Areas/Admin/assets/js/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl: '/Areas/Admin/assets/js/ckfinder/ckfinder.html?Type=Flash',
+            height: 300
+        });
+    }
+</script>

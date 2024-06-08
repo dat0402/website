@@ -1,0 +1,157 @@
+﻿@model PagedList.IPagedList<website.Models.DonHang>
+@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var stt = 0;
+    var tt = ViewData["tt"] as List<website.Models.ThongTin>;
+    <style>
+        table tr td {
+            white-space: initial; overflow: hidden;
+        }
+    </style>
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Trang chủ /</span> Danh sách đơn hàng  </h4>
+    <div class="card">
+        <div class="row" style=" display: flex; justify-content: flex-end; padding: 10px 25px; ">
+            <select class="col-md-3" onchange="loc()" id="loc">
+                <option>-- Chọn tình trạng --</option>
+                <option value="1" @(Request["tinhtrang"] != null && Request["tinhtrang"]=="1"?"selected":"")>Đang xử lý</option>
+                <option value="2" @(Request["tinhtrang"] != null && Request["tinhtrang"]=="2"?"selected":"")>Đã giao hàng</option>
+                <option value="3" @(Request["tinhtrang"] != null && Request["tinhtrang"]=="3"?"selected":"")>Đơn bị hủy</option>
+            </select>
+        </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table" style="table-layout: fixed">
+                <thead>
+                    <tr class="text-center">
+                        <th>Số thứ tự</th>
+                        <th>Khách hàng</th>
+                        <th>
+                           HTTT
+                        </th>
+                        <th>
+                            Tổng tiền
+                        </th>
+                        <th>
+                            Ngày đặt
+                        </th>
+                        <th>
+                            Số điện thoại
+                        </th>
+                        <th>
+                           Địa chỉ
+                        </th>
+                        <th style="width:350px">
+                           Tình trạng
+                        </th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                        stt++;
+                        <tr class="text-center">
+                            <td>
+                                @stt
+                            </td>
+                            <td style=" white-space: initial; overflow: hidden;">
+                                @tt.FirstOrDefault(g=>g.IdTK==item.IdTK).HoTen
+                            </td>
+                            <td>
+                                @(item.HinhThucTT==1?"Thanh toán khi nhận hàng":"Thanh toán Momo")
+                            </td>
+                            <td>
+                                @website.Models.conver.ConvertToThousand64_From_Float(item.TongTien) VNĐ
+                            </td>
+                            <td>
+                                @item.NgayDat.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @item.SDT
+                            </td>
+                            <td>
+                                @item.DiaChiNhanHang
+                            </td>
+                            <td>
+                                @if (item.TinhTrang == 1)
+                                {
+                                    <span style="color:#3ff613">Đang xử lý</span>
+                                   
+                                }
+                                else if (item.TinhTrang == 2)
+                                {
+                                    <span style="color:#378afe">Đã giao hàng</span>
+                                }
+
+                                else if (item.TinhTrang == 3)
+                                {
+                                    <span style="color:#e04646">
+                                        Đơn hàng bị hủy
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.TinhTrang == 1)
+                                {
+                                    using (Ajax.BeginForm("HuyDon", "DanhGia", null,
+new AjaxOptions
+{
+HttpMethod = "Post",
+OnSuccess = "don",
+UpdateTargetId = "response",
+InsertionMode = InsertionMode.Replace,
+},
+new { enctype = "multipart/form-data" }
+))
+                                    {
+                                        <input hidden name="Id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Đơn hàng đã hủy" style="margin:10px 10px;width:30px;height:30px"><i class="fas fa-window-close"></i></button>
+                                    }
+                                    using (Ajax.BeginForm("NhanHang", "DanhGia", null,
+new AjaxOptions
+{
+HttpMethod = "Post",
+OnSuccess = "don",
+UpdateTargetId = "response",
+InsertionMode = InsertionMode.Replace,
+},
+new { enctype = "multipart/form-data" }
+))
+                                    {
+                                        <input hidden name="Id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-success" title="Giao hàng thành công" style="margin:10px 10px;width:30px;height:30px"><i class="fa fa-check"></i></button>
+                                    }
+                                }
+                                <a class="btn btn-sm btn-outline-primary" style="width:30px;height:30px" title="Xem chi tiết đơn hàng" href="/Admin/DonHang/XemChiTiet?id=@item.Id&&page=1">
+                                    <i class="fas fa-list"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="col-md-12" style="text-align:right;color:black">
+                Tổng số bản ghi: @ViewBag.total &nbsp;
+            </div>
+            <ul class="pagination" style="float:right;margin-right:20px">
+
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <li>
+                        <a class="page-link @(Convert.ToInt32(ViewBag.pageNumber)==i?"active1":"")" href="@Url.Action("Index", new { page = i })">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>

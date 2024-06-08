@@ -1,0 +1,36 @@
+﻿.card {
+    margin: 0 1rem;
+    padding: 1rem;
+    width: max-content;
+}
+
+.star {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.one {
+    color: rgb(255, 0, 0);
+}
+
+.two {
+    color: rgb(255, 106, 0);
+}
+
+.three {
+    color: #f7eb09;
+}
+
+.four {
+    color: #ed1df6;
+}
+
+.five {
+    color: rgb(24, 159, 14);
+}
+.an{
+    display:none!important;
+}
+.hien{
+    display:block!important;
+}

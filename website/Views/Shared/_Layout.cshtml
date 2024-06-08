@@ -1,0 +1,287 @@
+﻿@using website.Models
+@{
+    Cart cart = Session["Cart"] as Cart;
+    int count = 0;
+    if (cart != null)
+    {
+        count = cart.Items.Count();
+    }
+    var tong = 0;
+}
+    <!DOCTYPE html>
+    <html lang="en">
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Website bán vật liệu cơ khí</title>
+        <link rel="icon" href="~/Images/icon.png" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="~/Style/css/bootstrap.min.css" type="text/css">
+        <link rel="stylesheet" href="~/Style/css/style.css" type="text/css">
+        <link rel="stylesheet" href="~/Style/css/revslider.css" type="text/css">
+        <link rel="stylesheet" href="~/Style/css/owl.carousel.css" type="text/css">
+        <link rel="stylesheet" href="~/Style/css/owl.theme.css" type="text/css">
+        <link rel="stylesheet" href="~/Style/css/font-awesome.css" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
+        <link href="~/Areas/Admin/assets/css/dialog.css" rel="stylesheet" />
+        <link href="~/Style/css/range.css" rel="stylesheet" />
+        <link href="~/Areas/Admin/assets/css/messagebox.css" rel="stylesheet" />
+    </head>
+    <body class="cms-index-index">
+        <div class="page">
+            <header class="header-container">
+                <div class="header-top">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="welcome-msg hidden-xs"> Chào mừng quý khách! </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="toplinks">
+                                    <div class="links">
+                                        <div class="phone hidden-xs">Hotline:  0398808521</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header container">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-3 col-md-2 col-xs-12">
+                            <!-- Header Logo -->
+                            <a class="logo" href="/" style="display:flex;align-items:center;font-size:20px;font-weight:800"><img alt="Vật liệu cơ khí Xuân Hồi" src="~/Images/icon.png" width="80" height="40">Vật liệu cơ khí Xuân Hồi</a>
+                            <!-- End Header Logo -->
+                        </div>
+                        <div class="col-lg-5 col-sm-4 col-md-6 col-xs-12">
+                            <!-- Search-col -->
+                            <div class="search-box">
+                                <form action="/Home/Index" id="search_mini_form">
+                                    <input type="text" placeholder="Nhập id sản phẩm muốn tìm kiếm ......." value="@(Request["search"]==null?"":Request["search"])" maxlength="70" class="" name="search" id="search">
+                                    <button id="submit-button" class="search-btn-bg"><span>Tìm kiếm</span></button>
+                                </form>
+                            </div>
+                            <!-- End Search-col -->
+                        </div>
+                        <!-- Top Cart -->
+                        <div class="col-lg-4 col-sm-5 col-md-4 col-xs-12">
+                            <div class="top-cart-contain">
+                                <div class="mini-cart">
+                                    <div data-toggle="dropdown" data-hover="dropdown" class="basket dropdown-toggle">
+                                        <a href="shopping_cart.html">
+                                            <i class="icon-cart"></i>
+                                            <div class="cart-box"><span class="title">Giỏ hàng</span><span id="cart-total">@count</span></div>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <div class="top-cart-content arrow_box">
+                                            <div class="block-subtitle">Sản phẩm trong giỏ hàng</div>
+                                            <ul id="cart-sidebar" class="mini-products-list">
+                                                @if (cart != null)
+                                                {
+                                                    foreach (var item in cart.Items)
+                                                    {
+                                                        <li class="item even">
+                                                            <a class="product-image" href="/chi-tiet-san-pham?id=@item.product.Id" title="@item.product.TenSP"><img src="~/Upload/SanPham/@item.product.HinhAnh.Split(',')[0]" width="80"></a>
+                                                            <div class="detail-item">
+                                                                <div class="product-details">
+                                                                    <a href="#" title="Xóa sản phẩm trong giỏ hàng" onClick="xoagh(@item.product.Id)" class="glyphicon glyphicon-remove">&nbsp;</a>
+                                                                    <p class="product-name">
+                                                                        <a href="/chi-tiet-san-pham?id=@item.product.Id">@item.product.TenSP</a>
+
+                                                                    </p>
+
+                                                                </div>
+                                                                <div class="product-details-bottom"> <span class="price">@website.Models.conver.ConvertToThousand64_From_Float(item.Gia) VNĐ</span> <span class="title-desc">Số lượng:</span> <strong>@item.Quantity</strong> </div>
+                                                            </div>
+                                                        </li>
+                                                        tong += Convert.ToInt32(item.Gia) * Convert.ToInt32(item.Quantity);
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    <li class="item even">
+                                                        <p>Không có sản phẩm trong giỏ hàng</p>
+                                                    </li>
+                                                }
+
+
+                                            </ul>
+                                            <div class="top-subtotal">Tổng tiền: <span class="price">@website.Models.conver.ConvertToThousand64_From_Float(tong) VNĐ</span></div>
+                                            <div class="actions">
+                                                <a class="view-cart" href="/Home/GioHang"><span>Giỏ hàng</span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="ajaxconfig_info" style="display:none">
+                                    <a href="#/"></a>
+                                    <input value="" type="hidden">
+                                    <input id="enable_module" value="1" type="hidden">
+                                    <input class="effect_to_cart" value="1" type="hidden">
+                                    <input class="title_shopping_cart" value="Giỏ hàng" type="hidden">
+                                </div>
+                            </div>
+                            @if (Session["Ten"] != null && Session["PQ"].ToString() != "1")
+                            {
+                                <div class="signup"><a title="Đăng xuất" href="/Home/Logout"><span>Đăng xuất</span></a></div>
+                                <span class="or"> | </span>
+                                <div class="login">
+                                    <a title="Thông tin cá nhân" href="/Home/ThongTin?id=@Session["Id"]"><img src="~/Areas/Admin/assets/img/avatars/profile.jpg" width="20" class="w-px-40 h-auto rounded-circle" title="@Session["Ten"]" /></a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="signup"><a title="Đăng kí" href="/Home/Register"><span>Đăng kí</span></a></div>
+                                <span class="or"> | </span>
+                                <div class="login"><a title="Đăng nhập" href="/Home/Login"><span>Đăng nhập</span></a></div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </header>
+            @{Html.RenderPartial("Menu", "Home");}
+            @RenderBody()
+            <footer class="footer">
+
+                <div class="footer-middle container">
+                    <div class="col-md-3 col-sm-4">
+                        <div class="footer-logo"><a href="/" title="Logo"><img src="~/Images/icon.png" alt="logo" width="100"></a></div>
+                        <p>Cơ Khí Xuân Hồi</p>
+                    </div>
+                    <div class="col-md-3 col-sm-4">
+                        <h4>Giới thiệu cửa hàng</h4>
+                        <ul class="links">
+                            <li class="first"><a href="/Home/GioiThieu">Giới thiệu</a></li>
+                            <li><a href="/Home/LienHe">Nhà cung cấp</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-sm-4">
+                        <h4>Thông tin cá nhân</h4>
+                        <ul class="links">
+                            <li class="first"><a href="/Home/ThongTin?id=@Session["Id"]">Thông tin cá nhân</a></li>
+                            <li><a href="/Home/DoiMK">Đổi mật khẩu</a></li>
+                            <li><a href="/Home/LichSu">Lịch sử đơn hàng</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-sm-4">
+                        <h4>Về chúng tôi</h4>
+                        <div class="contacts-info">
+                            <address>
+                                <i class="add-icon">&nbsp;</i>số 64, Tứ Minh, TP.Hải Dương<br>
+                                &nbsp;
+                            </address>
+                            <div class="phone-footer"><a href="tel:+84398808521" style="color:white"><i class="phone-icon">&nbsp;</i>0398808521</a> </div>
+                            <div class="email-footer"><a style="color:white"><i class="email-icon">&nbsp;</i> XuanHoi@gmail.com</a> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom container">
+                    <div class="col-sm-5 col-xs-12 coppyright"> &copy; 2024 Vật liệu cơ khí</div>
+                    <div class="col-sm-7 col-xs-12 company-links">
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+        <div class="message-model">
+            <div class="message-content">
+            </div>
+            <div class="message-box">
+                <div class="message-header">
+                    Thông báo
+                </div>
+                <div class="message-main">
+                    <p id="notify"></p>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="~/Style/js/jquery.min.js"></script>
+        <script type="text/javascript" src="~/Style/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="~/Style/js/common.js"></script>
+        <script src="~/Areas/Admin/assets/js/common.js"></script>
+        <script src="~/Style/js/cloudzoom.js"></script>
+        <script type="text/javascript" src="~/Style/js/revslider.js"></script>
+        <script type="text/javascript" src="~/Style/js/owl.carousel.min.js"></script>
+        <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/Style/js/range.js"></script>
+        <script type='text/javascript'>
+            jQuery(document).ready(function () {
+                jQuery('#rev_slider_4').show().revolution({
+                    dottedOverlay: 'none',
+                    delay: 5000,
+                    startwidth: 1170,
+                    startheight: 580,
+
+                    hideThumbs: 200,
+                    thumbWidth: 200,
+                    thumbHeight: 50,
+                    thumbAmount: 2,
+
+                    navigationType: 'thumb',
+                    navigationArrows: 'solo',
+                    navigationStyle: 'round',
+
+                    touchenabled: 'on',
+                    onHoverStop: 'on',
+
+                    swipe_velocity: 0.7,
+                    swipe_min_touches: 1,
+                    swipe_max_touches: 1,
+                    drag_block_vertical: false,
+
+                    spinner: 'spinner0',
+                    keyboardNavigation: 'off',
+
+                    navigationHAlign: 'center',
+                    navigationVAlign: 'bottom',
+                    navigationHOffset: 0,
+                    navigationVOffset: 20,
+
+                    soloArrowLeftHalign: 'left',
+                    soloArrowLeftValign: 'center',
+                    soloArrowLeftHOffset: 20,
+                    soloArrowLeftVOffset: 0,
+
+                    soloArrowRightHalign: 'right',
+                    soloArrowRightValign: 'center',
+                    soloArrowRightHOffset: 20,
+                    soloArrowRightVOffset: 0,
+
+                    shadow: 0,
+                    fullWidth: 'on',
+                    fullScreen: 'off',
+
+                    stopLoop: 'off',
+                    stopAfterLoops: -1,
+                    stopAtSlide: -1,
+
+                    shuffle: 'off',
+
+                    autoHeight: 'off',
+                    forceFullWidth: 'on',
+                    fullScreenAlignForce: 'off',
+                    minFullScreenHeight: 0,
+                    hideNavDelayOnMobile: 1500,
+
+                    hideThumbsOnMobile: 'off',
+                    hideBulletsOnMobile: 'off',
+                    hideArrowsOnMobile: 'off',
+                    hideThumbsUnderResolution: 0,
+
+                    hideSliderAtLimit: 0,
+                    hideCaptionAtLimit: 0,
+                    hideAllCaptionAtLilmit: 0,
+                    startWithSlide: 0,
+                    fullScreenOffsetContainer: ''
+                });
+            });
+        </script>
+        @RenderSection("scripts", false)
+    </body>
+</html>

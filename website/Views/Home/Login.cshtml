@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="main-container col1-layout">
+    <div class="main container">
+        <div class="account-login">
+            <div class="page-title">
+                <h2>Đăng nhập tài khoản</h2>
+            </div>
+            <fieldset class="col2-set">
+                    @using (Ajax.BeginForm("Login", "Home", null,
+                           new AjaxOptions
+                           {
+                               HttpMethod = "Post",
+                               OnSuccess = "login",
+                               UpdateTargetId = "response",
+                               InsertionMode = InsertionMode.Replace,
+                           },
+                           new { enctype = "multipart/form-data" }
+                           ))
+                    {
+                        <div class="col-1 new-users">
+                            <strong>Đăng nhập hệ thống</strong>
+                            <div class="content">
+                                <p>Sử dụng email đăng kí để đăng nhập</p>
+                                <ul class="form-list">
+                                    <li>
+                                        <label for="email">Email <span class="required">*</span></label>
+                                        <br>
+                                        <input type="text" title="Email của bạn" class="input-text required-entry" id="email" value="" name="Email">
+                                    </li>
+                                    <li>
+                                        <label for="pass">Mật khẩu <span class="required">*</span></label>
+                                        <br>
+                                        <input type="password" class="input-text required-entry validate-password" name="MatKhau">
+                                    </li>
+                                </ul>
+                                <p class="required"></p>
+                                <div class="buttons-set">
+                                    <button id="send2" name="send" type="submit" class="button"><span>Đăng nhập</span></button>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </fieldset>
+            <script></script>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>

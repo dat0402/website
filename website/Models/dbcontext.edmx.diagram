@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ab9f9f4a4d554fb18b59853e0b702639" Name="Diagram1" ZoomLevel="105">
+        <EntityTypeShape EntityType="VatLieuCoKhiModel.DanhGia" Width="1.5" PointX="3.125" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VatLieuCoKhiModel.DanhMucSP" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="VatLieuCoKhiModel.DonHang" Width="1.5" PointX="5.875" PointY="5.625" />
+        <EntityTypeShape EntityType="VatLieuCoKhiModel.DonHangCT" Width="1.5" PointX="5.875" PointY="2.875" />
+        <EntityTypeShape EntityType="VatLieuCoKhiModel.KhuyenMai" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="VatLieuCoKhiModel.NCC" Width="1.5" PointX="0.75" PointY="7.25" />
+        <EntityTypeShape EntityType="VatLieuCoKhiModel.SanPham" Width="1.5" PointX="3" PointY="3" />
+        <EntityTypeShape EntityType="VatLieuCoKhiModel.TaiKhoan" Width="1.5" PointX="0.75" PointY="10.875" />
+        <EntityTypeShape EntityType="VatLieuCoKhiModel.ThongTin" Width="1.5" PointX="3" PointY="14.625" />
+        <EntityTypeShape EntityType="VatLieuCoKhiModel.TinTuc" Width="1.5" PointX="9.75" PointY="1.875" />
+        <AssociationConnector Association="VatLieuCoKhiModel.FK_DanhGia_SanPham" />
+        <AssociationConnector Association="VatLieuCoKhiModel.FK__SanPham__IdDM__4316F928" />
+        <AssociationConnector Association="VatLieuCoKhiModel.FK__DonHang__IdTK__46E78A0C" />
+        <AssociationConnector Association="VatLieuCoKhiModel.FK__DonHangCT__IdDH__49C3F6B7" />
+        <AssociationConnector Association="VatLieuCoKhiModel.FK__DonHangCT__IdSP__4AB81AF0" />
+        <AssociationConnector Association="VatLieuCoKhiModel.FK__SanPham__IdKM__440B1D61" />
+        <AssociationConnector Association="VatLieuCoKhiModel.FK__SanPham__IdNCC__4222D4EF" />
+        <AssociationConnector Association="VatLieuCoKhiModel.FK__ThongTin__IdTK__398D8EEE" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

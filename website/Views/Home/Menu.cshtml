@@ -1,0 +1,88 @@
+﻿@{
+    Layout = null;
+    var danhmuc = ViewData["danhmuc"] as List<website.Models.DanhMucSP>;
+}
+<nav>
+    <div class="container">
+        <div class="nav-inner">
+            <div class="hidden-desktop" id="mobile-menu">
+                <ul class="navmenu">
+                    <li>
+                        <div class="menutop">
+                            <div class="toggle"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></div>
+                            <h2>Menu</h2>
+                        </div>
+                        <ul style="display:none;" class="submenu">
+                            <li>
+                                <ul class="topnav">
+                                    <li class="level0 nav-6 level-top first parent">
+                                        <a class="level-top" href="/"> <span>Trang chủ</span> </a>
+                                    </li>
+                                    <li class="level0 nav-6"> <a href="/ve-chung-toi"> <span>Giới thiệu</span> </a> </li>
+                                    <li class="level0 nav-6 level-top">
+                                        <a class="level-top" href="/danh-sach"> <span>Danh mục sản phẩm</span> </a>
+                                        <ul class="level0">
+                                            @foreach (var item in danhmuc)
+                                            {
+                                                <li class="level1 first">
+                                                    <a href="/danh-sach-loai?id=@item.Id"><span>@item.TenDM</span></a>
+                                                </li>
+
+                                            }
+                                            <li>
+                                                <a href="/danh-sach"><span>Tất cả sản phẩm</span></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="level0 nav-6"> <a href="/tin-tuc"> <span>Tin tức</span> </a> </li>
+                                    <li class="level0 nav-6"> <a href="/lien-he"> <span>Liên hệ</span> </a> </li>
+                                    
+                                </ul>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+                <!--navmenu-->
+            </div>
+            <a class="logo-small" title="Vật liệu cơ khí" style="font-size:12px;font-weight:800;color:white" href="/"><img alt="Vật liệu cơ khí" src="~/Images/icon.png" width="20" height="20">Vật liệu cơ khí</a>
+            <ul id="nav" class="hidden-xs">
+                <li class="level0 parent drop-menu">
+                    <a href="/"><span>Trang chủ</span> </a>
+                </li>
+                <li class="level0 nav-5 level-top first">
+                    <a class="level-top" href="/ve-chung-toi"> <span>Giới thiệu</span> </a>
+                </li>
+
+                <li class="level0 nav-5">
+                    <a href="/danh-sach"><span>Danh mục</span> </a>
+                    <div class="level0-wrapper dropdown-6col" style="display: none;">
+                        <div class="level0-wrapper2">
+                            <div class="nav-block nav-block-center">
+                                <ul class="level0">
+                                    @foreach (var item in danhmuc)
+                                    {
+                                        <li class="level1 nav-6-1 parent item">
+                                            <a href="/danh-sach-loai?id=@item.Id"><span>@item.TenDM</span></a>
+                                        </li>
+                                    }
+                                    <li>
+                                        <a href="/danh-sach"><span>Tất cả sản phẩm</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--level0-wrapper2-->
+                    </div>
+                </li>
+                <li class="level0 nav-7 level-top parent">
+                    <a href="/tin-tuc" class="level-top"> <span>Tin tức</span> </a>
+                </li>
+
+                <li class="level0 nav-5 level-top parent">
+                    <a href="/lien-he"><span>Nhà cung cấp</span> </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

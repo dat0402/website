@@ -1,0 +1,141 @@
+﻿@using website.Models
+@model IEnumerable<DonHangCT>
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var sp = ViewData["sp"] as List<SanPham>;
+    var km = ViewData["km"] as List<KhuyenMai>;
+    var donhang = ViewData["donhang"] as List<DonHang>;
+
+}
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <ul>
+                <li class="home"> <a href="/" title="Trở lại trang chủ">Trang chủ</a><span>&mdash;›</span></li>
+                <li class=""> <a>Lịch sử đơn hàng</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:10px">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-8">
+        <div class="cart wow">
+            <div class="page-title">
+                <h2>Danh sách đơn hàng</h2>
+                <br />
+                <form action="/Home/LichSu" method="get" style="display:flex">
+                    <input name="SDT" placeholder="Nhập số điện thoại nhận hàng" value="@(Request["SDT"]==null?"":Request["SDT"])" class="col-md-5 form-control"/>
+                    <button type="submit" class="btn btn-danger">Lọc</button>
+                </form>
+            </div>
+            <div class="table-responsive" style="margin:0 0 20px 0">
+                @if (donhang == null)
+                {
+                    <h2>Không có lịch sử đơn hàng</h2>
+                }
+                else
+                {
+            <table class="data-table cart-table" id="shopping-cart-table">
+                <thead>
+                    <tr class="first last">
+                        <th rowspan="1">Hình ảnh</th>
+                        <th rowspan="1"><span class="nobr">Sản phẩm</span></th>
+                        <th class="a-center" rowspan="1">Tình trạng</th>
+
+                    </tr>
+
+                </thead>
+            </table>
+                    foreach (var items in donhang)
+                    {
+                        var index = 0;
+                        <fieldset>
+                            <table class="data-table cart-table" id="shopping-cart-table">
+                                <thead>
+                                    <tr>
+                                        <th >Ngày đặt hàng: @items.NgayDat.ToString("dd/MM/yyyy")</th>
+                                        <th colspan="2">Tổng Tiền: @website.Models.conver.ConvertToThousand64_From_Float(items.TongTien)</th>
+                                    </tr>
+                                   
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Where(g=>g.IdDH==items.Id))
+                                    {
+                                        var a = sp.FirstOrDefault(g => g.Id == item.IdSP);
+                                        var tl = km.FirstOrDefault(g => g.Id == a.IdKM).TiLeKM;
+                                        <tr class="first odd">
+                                            <td class="image" style="width:200px"><a class="product-image" href="/chi-tiet-san-pham?id=@a.Id"><img width="75" src="~/Upload//SanPham/@a.HinhAnh.Split(',')[0]"></a></td>
+                                            <td style="width:400px"><h2 class="product-name"> <a href="/chi-tiet-san-pham?id=@a.Id">@a.TenSP</a> </h2></td>
+                                            @if (index == 0)
+                                            {
+                                                <td rowspan="@Model.Where(g=>g.IdDH==items.Id).Count()">
+                                                    @if (items.TinhTrang == 1)
+                                                    {
+                                                        <span style="color:#3ff613">Đặt hàng thành công</span>
+                                                       
+                                                    }
+                                                    else if (items.TinhTrang == 2)
+                                                    {
+                                                        <span style="color:#378afe">Đã nhận hàng</span>
+                                                    }
+                                                    else if (items.TinhTrang == 3)
+                                                    {
+                                                        <span style="color:#e04646">Hủy đơn</span>
+                                                    }
+                                                </td>
+                                                <td rowspan="@Model.Where(g=>g.IdDH==items.Id).Count()">
+                                                    @if (items.TinhTrang == 1)
+                                                    {
+                                                        using (Ajax.BeginForm("HuyDon", "Home", null,
+                                                            new AjaxOptions
+                                                            {
+                                                                HttpMethod = "Post",
+                                                                OnSuccess = "don",
+                                                                UpdateTargetId = "response",
+                                                                InsertionMode = InsertionMode.Replace,
+                                                             },
+                                                            new { enctype = "multipart/form-data" }
+                                                            ))
+                                                        {
+                                                            <input hidden name="Id" value="@items.Id" />
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Hủy đơn hàng" style="margin:10px 10px;width:60px;height:30px; background:red">Hủy</button>
+                                                        }
+                                                        using (Ajax.BeginForm("NhanHang", "Home", null,
+                                                        new AjaxOptions
+                                                        {
+                                                            HttpMethod = "Post",
+                                                            OnSuccess = "don",
+                                                            UpdateTargetId = "response",
+                                                            InsertionMode = InsertionMode.Replace,
+                                                        },
+                                                        new { enctype = "multipart/form-data" }
+                                                        ))
+                                                        {
+                                                            <input hidden name="Id" value="@items.Id" />
+                                                            <button type="submit" class="btn btn-sm btn-outline-success" title="Đã nhận hàng" style="margin: 10px 10px; width: 60px; height: 30px; background: green">Đã nhận</button>
+                                                        }
+
+                                                    }
+
+                                                </td>
+                                            }
+
+                                        </tr>
+                                        index++;
+                                    }
+
+                                </tbody>
+                            </table>
+                        </fieldset>
+                    }
+
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

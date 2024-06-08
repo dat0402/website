@@ -1,0 +1,106 @@
+﻿@model PagedList.IPagedList<website.Models.TinTuc>
+@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var stt = 0;
+}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Trang chủ /</span> Danh sách tin tức</h4>
+    <div class="card">
+        <div class="row" style=" display: flex; justify-content: flex-end; padding: 10px 25px; ">
+            @Ajax.ActionLink(
+
+         " Thêm mới ",
+         "Create",
+         "TinTuc",
+         new AjaxOptions
+         {
+             UpdateTargetId = "responsive",
+             InsertionMode = InsertionMode.Replace,
+             HttpMethod = "GET",
+             OnComplete = "load"
+         },
+         new { @class = "btn btn-primary col-md-1" }
+         )
+
+        </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table " style="table-layout: fixed">
+                <thead>
+                    <tr class="text-center">
+                        <th>Số thứ tự</th>
+                        <th>Tiêu đề</th>
+                        <th>
+                            Hình đại diện
+                        </th>
+                        <th>
+                            Ngày đăng
+                        </th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        stt++;
+                        <tr class="text-center">
+                            <td>
+                                @stt
+                            </td>
+                            <td style=" white-space: initial; overflow: hidden;">
+                                @item.TieuDe
+                            </td>
+                            <td>
+                                <img src="~/Upload/TinTuc/@item.AnhDaiDien" height="100" />
+                            </td>
+                            <td>
+                                @item.NgayDang.Value.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Ajax.ActionLink(
+                   " ",
+                   "Edit",
+                   "TinTuc",
+                   new { id = item.Id },
+                   new AjaxOptions
+                   {
+                       UpdateTargetId = "responsive",
+                       InsertionMode = InsertionMode.Replace,
+                       HttpMethod = "GET",
+                       OnComplete = "loadfrmEditSussess"
+                   },
+                   new
+                        {
+                            @class = "btn btn-sm btn-outline-success fas fa-pencil-alt",
+                       @title = "Sửa"
+                        }
+                   )
+                                <a class="btn btn-sm btn-outline-dark" title="Xóa" onclick="btndelete(@item.Id,'TinTuc')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="col-md-12" style="text-align:right;color:black">
+                Tổng số bản ghi: @ViewBag.total &nbsp;
+            </div>
+            <ul class="pagination" style="float:right;margin-right:20px">
+
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <li>
+                        <a class="page-link @(Convert.ToInt32(ViewBag.pageNumber)==i?"active1":"")" href="@Url.Action("Index", new { page = i })">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>

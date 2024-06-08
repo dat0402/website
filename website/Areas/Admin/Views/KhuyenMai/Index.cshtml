@@ -1,0 +1,101 @@
+﻿@model PagedList.IPagedList<website.Models.KhuyenMai>
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var stt = 0;
+}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Trang chủ /</span> Khuyến mại</h4>
+    <div class="card">
+        <div class="row" style=" display: flex; justify-content: flex-end; padding: 10px 25px; ">
+            @Ajax.ActionLink(
+
+         " Thêm mới ",
+         "Create",
+         "KhuyenMai",
+         new AjaxOptions
+         {
+             UpdateTargetId = "responsive",
+             InsertionMode = InsertionMode.Replace,
+             HttpMethod = "GET",
+             OnComplete = "load"
+         },
+         new { @class = "btn btn-primary col-md-1" }
+         )
+
+        </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                    <tr class="text-center">
+                        <th>Số thứ tự</th>
+                        <th>Mã khuyến mại</th>
+                        <th>
+                            Tỉ lệ khuyến mại(%)
+                        </th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach (var item in Model)
+                    {
+                        stt++;
+                        <tr class="text-center">
+                            <td>
+                                @stt
+                            </td>
+                            <td>
+                                @item.MaKM
+                            </td>
+                            <td>
+                                @item.TiLeKM
+                            </td>
+                            <td>
+                                @Ajax.ActionLink(
+                   " ",
+                   "Edit",
+                   "KhuyenMai",
+                   new { id = item.Id },
+                   new AjaxOptions
+                   {
+                       UpdateTargetId = "responsive",
+                       InsertionMode = InsertionMode.Replace,
+                       HttpMethod = "GET",
+                       OnComplete = "loadfrmEditSussess"
+                   },
+                   new
+                        {
+                            @class = "btn btn-sm btn-outline-success fas fa-pencil-alt",
+                       @title = "Sửa"
+                        }
+                   )
+                                <a class="btn btn-sm btn-outline-dark" title="Xóa" onclick="btndelete(@item.Id,'KhuyenMai')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="col-md-12" style="text-align:right;color:black">
+                Tổng số bản ghi: @ViewBag.total &nbsp;
+            </div>
+            <ul class="pagination" style="float:right;margin-right:20px">
+
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <li>
+                        <a class="page-link @(Convert.ToInt32(ViewBag.pageNumber)==i?"active1":"")" href="@Url.Action("Index", new { page = i })">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>

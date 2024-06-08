@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+@{
+    string actionName = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+    string controllerName = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+}
+<html lang="en"
+      class="light-style layout-menu-fixed layout-compact"
+      dir="ltr"
+      data-theme="theme-default"
+      data-assets-path="~/Areas/Admin/assets/"
+      data-template="vertical-menu-template-free">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Vật liệu cơ khí Xuân Hồi</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/x-icon" href="~/Images/icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet" />
+    <link rel="stylesheet" href="~/Areas/Admin/assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="~/Areas/Admin/assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="~/Areas/Admin/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="~/Areas/Admin/assets/css/demo.css" />
+    <link rel="stylesheet" href="~/Areas/Admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/Areas/Admin/assets/vendor/libs/apex-charts/apex-charts.css" />
+    <script src="~/Areas/Admin/assets/vendor/js/helpers.js"></script>
+    <script src="~/Areas/Admin/assets/js/config.js"></script>
+    <link href="~/Upload/fontawesome-free-5.15.4-web/css/all.min.css" rel="stylesheet" />
+    <link href="~/Upload/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/assets/css/dialog.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/assets/css/messagebox.css" rel="stylesheet" />
+</head>
+
+<body >
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+                <div class="app-brand demo">
+                    <a href="/Admin/Homes/Index" class="app-brand-link">
+                        <img src="~/Images/icon.jpg" height="50" />
+                        <span style="font-size:35px; " class=" demo menu-text fw-bold ms-2">ADMIN</span>
+                    </a>
+
+                    <a href="/Admin/Homes/Index" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+                    </a>
+                </div>
+
+                <div class="menu-inner-shadow"></div>
+
+                <ul class="menu-inner py-1">
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Giao diện & Doanh thu</span>
+                    </li>
+                    <li class="menu-item @(controllerName=="Homes"?"active":"")">
+                        <a href="/Admin/Homes/Index" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div>Trang chủ</div>
+                        </a>
+                    </li>
+                    <li class="menu-item  @(controllerName=="Banners"||controllerName=="DanhMuc"?"active":"")">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-layout"></i>
+                            <div data-i18n="Layouts">Giao diện chính</div>
+                        </a>
+
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="@Url.Action("Index","DanhMuc")" class="menu-link">
+                                    <div data-i18n="Without menu">Danh mục sản phẩm</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Sản phẩm &amp; Khuyến mại</span>
+                    </li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-package"></i>
+                            <div data-i18n="Account Settings">Sản phẩm</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="@Url.Action("Index","SanPham")" class="menu-link">
+                                    <div data-i18n="Notifications">Sản phẩm</div>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="@Url.Action("Index","NCC")" class="menu-link">
+                                    <div data-i18n="Notifications">Nhà cung cấp</div>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons fa fa-check"></i>
+                            <div data-i18n="Danh sách đánh giá">Khuyến mại</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="@Url.Action("Index","KhuyenMai")" class="menu-link">
+                                    <div data-i18n="Notifications">Khuyến mại</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Đánh giá &amp; Tin tức</span></li>
+                    <!-- Forms -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-detail"></i>
+                            <div data-i18n="Form Elements">Đánh giá</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="@Url.Action("Index","DanhGia")" class="menu-link">
+                                    <div data-i18n="Basic Inputs">Đánh giá, bình luận</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-detail"></i>
+                            <div data-i18n="Form Layouts">Tin tức</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="@Url.Action("Index","TinTuc")" class="menu-link">
+                                    <div data-i18n="Vertical Form">Tin tức</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Đơn hàng &amp; Khách hàng</span></li>
+
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons fa fa-user"></i>
+                            <div data-i18n="Form Layouts">Khách hàng</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="@Url.Action("Index","KhachHang")" class="menu-link">
+                                    <div data-i18n="Vertical Form">Khách hàng</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons fa fa-list"></i>
+                            <div data-i18n="Form Layouts">Đơn hàng</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="@Url.Action("Index","DonHang")" class="menu-link">
+                                    <div data-i18n="Vertical Form">Đơn hàng</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </aside>
+            <div class="layout-page">
+                <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                     id="layout-navbar">
+                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                        <div class="navbar-nav align-items-center">
+                            <div class="nav-item">
+                                <h3>TRANG QUẢN TRỊ CỬA HÀNG VẬT LIỆU CƠ KHÍ</h3>
+                            </div>
+                        </div>
+                        <ul class="navbar-nav flex-row align-items-center ms-auto">
+                            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                                    <div class="avatar avatar-online">
+                                        <img src="~/Areas/Admin/assets/img/avatars/profile.jpg" alt class="w-px-40 h-auto rounded-circle" />
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar avatar-online">
+                                                        <img src="~/Areas/Admin/assets/img/avatars/profile.jpg" class="w-px-40 h-auto rounded-circle" />
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <span class="fw-medium d-block">Quản trị viên</span>
+                                                    <small class="text-muted">Admin</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/Home/Logout">
+                                            <i class="bx bx-power-off me-2"></i>
+                                            <span class="align-middle">Đăng xuất</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="content-wrapper">
+                    @RenderBody()
+                    <footer class="content-footer footer bg-footer-theme">
+                    </footer>
+                    <div class="content-backdrop fade"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <div class="dialog" id="responsive">
+    </div>
+    <div class="message-model">
+        <div class="message-content">
+        </div>
+        <div class="message-box">
+            <div class="message-header">
+                Thông báo
+            </div>
+            <div class="message-main">
+                <p id="notify"></p>
+            </div>
+        </div>
+    </div>
+    <div class="message-delete">
+        <div class="message-content">
+        </div>
+        <div class="message-box">
+            <div class="message-header">
+                Thông báo
+            </div>
+            <div class="message-main">
+                <p id="xoa">Bạn có chắc chắc muốn xóa ?</p>
+            </div>
+            <div class="message-footer">
+                <button class="btn btn-success huy">Hủy</button>
+                <button class="btn btn-primary xoa" style="margin-left:10px">Xóa</button>
+            </div>
+        </div>
+    </div>
+    <div class="message-giao">
+        <div class="message-content">
+        </div>
+        <div class="message-box">
+            <div class="message-header">
+                Thông báo
+            </div>
+            <div class="message-main">
+                <p id="xoa">Xác nhận đã giao hàng</p>
+            </div>
+            <div class="message-footer">
+                <button class="btn btn-success huy">Hủy</button>
+                <button class="btn btn-primary xoa" style="margin-left:10px">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+    <script src="~/Areas/Admin/assets/js/common.js"></script>
+    <script src="~/Areas/Admin/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="~/Areas/Admin/assets/vendor/libs/popper/popper.js"></script>
+    <script src="~/Areas/Admin/assets/vendor/js/bootstrap.js"></script>
+    <script src="~/Areas/Admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="~/Areas/Admin/assets/vendor/js/menu.js"></script>
+    <script src="~/Areas/Admin/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <script src="~/Areas/Admin/assets/js/main.js"></script>
+    <script src="~/Areas/Admin/assets/js/dashboards-analytics.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Areas/Admin/assets/js/ckeditor/ckeditor.js"></script>
+    <script src="~/Areas/Admin/assets/js/ckfinder/ckfinder.js"></script>
+    <script src="~/Areas/Admin/assets/js/ckfinder/config.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

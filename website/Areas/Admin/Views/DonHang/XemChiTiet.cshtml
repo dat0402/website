@@ -1,0 +1,100 @@
+﻿@model PagedList.IPagedList<website.Models.SanPham>
+@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var stt = 0;
+    var dm = ViewData["dm"] as List<website.Models.DanhMucSP>;
+    var km = ViewData["km"] as List<website.Models.KhuyenMai>;
+    var dh = ViewData["dh"] as List<website.Models.DonHangCT>;
+    var ncc = ViewData["ncc"] as List<website.Models.NCC>;
+
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Trang chủ /</span> Danh sách sản phẩm của đơn hàng   </h4>
+    <div class="card">
+        <div class="row" style=" display: flex; justify-content: flex-end; padding: 10px 25px; ">
+        </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table" style="table-layout: fixed">
+                <thead>
+                    <tr class="text-center">
+                        <th>Số thứ tự</th>
+                        <th>Tên sản phẩm</th>
+                        <th>
+                            Hình ảnh
+                        </th>
+                        <th>
+                            Giá niêm yết
+                        </th>
+                        <th>
+                            Đơn vị tính
+                        </th>
+                        <th>
+                            Nhà cung cấp
+                        </th>
+                        <th>
+                            Danh mục
+                        </th>
+                        <th>
+                            Khuyến mại
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                        stt++;
+                        <tr class="text-center">
+                            <td>
+                                @stt
+                            </td>
+                            <td style=" white-space: initial; overflow: hidden;">
+                                @item.TenSP
+                            </td>
+                            <td>
+                                <img src="~/Upload/SanPham/@item.HinhAnh.Split(',')[0]" height="100" />
+                            </td>
+                            <td>
+                                @website.Models.conver.ConvertToThousand64_From_Float(item.GiaGoc) VNĐ
+                            </td>
+                            <td>
+                                @item.DonViTinh
+                            </td>
+                            <td>
+                                @ncc.FirstOrDefault(g => g.Id == item.IdNCC).TenNCC
+                            </td>
+                            <td>
+                                @dm.FirstOrDefault(g => g.Id == item.IdDM).TenDM
+                            </td>
+                            <td>
+                                @item.Id
+                            </td>
+
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="col-md-12" style="text-align:right;color:black">
+                Tổng số bản ghi: @ViewBag.total &nbsp;
+            </div>
+            <ul class="pagination" style="float:right;margin-right:20px">
+
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <li>
+                        <a class="page-link @(Convert.ToInt32(ViewBag.pageNumber)==i?"active1":"")" href="@Url.Action("Index", new { page = i ,id=ViewBag.Id})">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>

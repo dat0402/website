@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="main-container col1-layout">
+    <div class="main container">
+        <div class="account-login">
+            <div class="page-title">
+                <h2>Đăng kí tài khoản</h2>
+            </div>
+            <fieldset class="col2-set">
+                @using (Ajax.BeginForm("Register", "Home", null,
+       new AjaxOptions
+       {
+           HttpMethod = "Post",
+           OnSuccess = "register",
+           UpdateTargetId = "response",
+           InsertionMode = InsertionMode.Replace,
+       },
+       new { enctype = "multipart/form-data" }
+       ))
+                {
+                    <div class="col-1 new-users">
+                        <strong>Đăng kí tài khoản</strong>
+                        <div class="content">
+                            <ul class="form-list">
+                                <li>
+                                    <label>Họ và tên <span class="required">*</span></label>
+                                    <br>
+                                    <input type="text" class="input-text required-entry" value="" name="HoTen">
+                                </li>
+                                <li>
+                                    <label>Giới tính <span class="required">*</span></label>
+                                    <br>
+                                    <select class="input-text required-entry" name="GioiTinh">
+                                        <option value="1">Nam</option>
+                                        <option value="0">Nữ</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <label>Ngày sinh <span class="required">*</span></label>
+                                    <br>
+                                    <input class="input-text required-entry" type="date" name="NgaySinh">
+                                </li>
+                                <li>
+                                    <label>Email <span class="required">*</span></label>
+                                    <br>
+                                    <input class="input-text required-entry" name="Email">
+                                </li>
+                                <li>
+                                    <label>Mật khẩu <span class="required">*</span></label>
+                                    <br>
+                                    <input class="input-text required-entry" name="MatKhau" type="password">
+                                </li>
+                                <li>
+                                    <label>Số điện thoại <span class="required">*</span></label>
+                                    <br>
+                                    <input class="input-text required-entry" name="SDT">
+                                </li>
+                                <li>
+                                    <label>Địa chỉ <span class="required">*</span></label>
+                                    <br>
+                                    <input class="input-text required-entry" name="DiaChi">
+                                </li>
+                            </ul>
+                            <p class="required"></p>
+                            <div class="buttons-set">
+                                <button type="submit" class="button"><span>Đăng kí</span></button>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            </fieldset>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>

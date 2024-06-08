@@ -1,0 +1,51 @@
+﻿@model website.Models.Banner
+
+@{
+    ViewBag.Title = "Sửa banner";
+}
+@using (Ajax.BeginForm("Edit", "Banners", null,
+                       new AjaxOptions
+                       {
+                           HttpMethod = "Post",
+                           OnSuccess = "onEditSuccess",
+                           UpdateTargetId = "response",
+                           InsertionMode = InsertionMode.Replace,
+                       },
+                       new { enctype = "multipart/form-data" }
+                       ))
+{
+    <input name="Id" value="@Model.Id" hidden />
+    <input name="HinhAnh" value="@Model.HinhAnh" hidden />
+    <div class="dialog-model"></div>
+    <div class="dialog-content">
+        <div class="dialog-header">
+            <div class="header-content">THÔNG TIN BANNER TRANG CHÍNH</div>
+        </div>
+        <div class="dialog-main">
+            <div class="dialog-grid">
+                <div class="dialog-grid-center">
+                    <div class="grid-title">
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Tiêu đề(<span style="color: red">*</span>)</label>
+                        @Html.EditorFor(model => model.TieuDe, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Hình ảnh cũ</label>
+                        <img src="~/Upload/Banner/@Model.HinhAnh" height="200" />
+                    </div>
+                    <div class="infor-details">
+                        <label for="txthoTen">Hình ảnh (<span style="color: red">*</span>)</label>
+                        <input type="file" name="file" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-footer">
+            <a class="btn btn-success" style="color:white" onclick="closedialog()">Hủy</a> &nbsp;
+            <button class="btn btn-primary" type="submit">Lưu</button>
+        </div>
+    </div>
+}
+

@@ -1,0 +1,123 @@
+﻿@model PagedList.IPagedList<website.Models.SanPham>
+@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "DanhSach";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var km = ViewData["km"] as List<website.Models.KhuyenMai>;
+    var ncc = ViewData["ncc"] as List<website.Models.NCC>;
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <ul>
+                <li class="home"> <a href="/">Trang chủ</a>@(ViewBag.ten==""?"": "-›")</li>
+                <li class=""> <a >@ViewBag.ten</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- end breadcrumbs -->
+<!-- Two columns content -->
+@if (Model.Count() ==0)
+            {
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>Chưa có sản phẩm</h1>
+                    </div>
+                </div>
+            }
+else
+            {
+<section class="main-container col2-left-layout">
+    <div class="main container">
+        <div class="row">
+            <section class="col-sm-10 col-xs-12 col-sm-push-1">
+                <div class="category-title">
+                    <h1>Danh sách sản phẩm</h1>
+                </div>
+                <div class="category-products">
+                    <div class="toolbar">
+                        <div class="sorter">
+                            <div class="view-mode"><span title="List" class="button button-active button-list">Danh sách</span>&nbsp; </div>
+                        </div>
+                        <div id="sort-by">
+
+                        </div>
+                        <div class="pager">
+                            <div class="pages">
+                                <label>Trang:</label>
+                                <ul class="pagination">
+                                    @for (int i = 1; i <= Model.PageCount; i++)
+                                    {
+                                        <li class="@(Convert.ToInt32(ViewBag.pageNumber)==i?"active":"")">
+                                            <a href="@Url.Action("DanhSach","Home", new { page = i ,id=ViewBag.id})">@i</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                        <form action="/Home/DanhSach" method="get" class="row" style="display:flex;justify-content:space-evenly;align-items:center">
+                            <label style="width:50px">Giá từ:</label><input name="batdau" class=" form-control" value="@Request["batdau"]"style="width:300px"/>
+                            <label style="width:50px;margin-left:10px">đến:</label><input name="ketthuc" value="@Request["k"]" class="form-control" style="width:300px"/>
+                            <button type="submit" class="btn btn-danger">Lọc</button>
+                        </form>
+                    <ul id="products-list" class="products-list">
+                        @foreach (var item in Model)
+                        {
+                            decimal khuyenmai = Convert.ToDecimal(km.FirstOrDefault(g => g.Id == item.IdKM).TiLeKM);
+                            <li class="item odd">
+                                <div class="col-item">
+                                    <div class="product_image">
+
+                                        <div class="images-container">
+                                            @if (khuyenmai > 0)
+                                            {
+                                                <div class="sale-label sale-top-right">-@khuyenmai%</div>
+
+                                            }
+                                            <a class="product-image" title="@item.TenSP" href="@Url.Action("ChiTietSP","Home",new {id=item.Id})"> <img src="~/Upload/SanPham/@item.HinhAnh.Split(',')[0]" class="img-responsive" alt="a" /> </a>
+                                            <div class="qv-button-container"> <a class="qv-e-button btn-quickview-1" href="@Url.Action("ChiTietSP","Home",new {id=item.Id})"><span><span>Quick View</span></span></a> </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-shop">
+                                        <h2 class="product-name"><a title=">@item.TenSP" href="@Url.Action("ChiTietSP","Home",new {id=item.Id})">@item.TenSP</a></h2>
+                                        <div>Đơn vị tính: @item.DonViTinh</div>
+                                        <div class="price-box">
+                                            @if (khuyenmai > 0)
+                                            {
+                                                <p class="special-price"> <span class="price">Giá bán : @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc * (100 - khuyenmai) / 100) VNĐ</span> </p>
+                                                <br />
+
+                                                <p class="old-price"><span class="price">Giá bán : @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc) VNĐ </span> </p>
+                                            }
+                                            else
+                                            {
+                                                <p class="special-price"> <span class="price">Giá bán : @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc) VNĐ </span> </p>
+
+                                            }
+                                        </div>
+                                        <div class="ratings">
+                                            <div class="rating-box">
+                                                <div style="width:90%" class="rating"></div>
+                                            </div>
+                                            <p class="rating-links"> <a href="#">1 Review(s)</a> <span class="separator">|</span> <a href="#review-form">Add Your Review</a> </p>
+                                        </div>
+                                        <div style="text-align:center;"> <h4>Mô tả: </h4></div>
+                                        <div class="desc std" style="display: -webkit-box;  -webkit-box-orient: vertical; -webkit-line-clamp: 3;  overflow: hidden; text-overflow: ellipsis; ">
+                                            @Html.Raw(item.MoTa)
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+            }

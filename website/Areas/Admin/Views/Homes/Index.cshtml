@@ -1,0 +1,122 @@
+﻿@model PagedList.IPagedList<website.Models.SanPham>
+@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var stt = 0;
+    var ncc = ViewData["ncc"] as List<website.Models.NCC>;
+    var dm = ViewData["dm"] as List<website.Models.DanhMucSP>;
+    var km = ViewData["km"] as List<website.Models.KhuyenMai>;
+    var dh = ViewData["dh"] as List<website.Models.DonHangCT>;
+    var dhh = ViewData["dhh"] as List<website.Models.DonHang>;
+    var lstId = dhh.Where(g => g.TinhTrang == 2).Select(g => (int?)g.Id).ToList();
+    var lstdh = dh.Where(g => lstId.Contains(g.IdDH)).ToList();
+    var nccnn = ViewBag.ten;
+    <style>
+        table tr td {
+            white-space: initial;
+            overflow: hidden;
+        }
+    </style>
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Trang chủ</span></h4>
+    <div class="card">
+        <div class="row" style=" display: flex;justify-content:space-around; padding: 10px 25px; ">
+            <div class="btn btn-primary col-md-2" style="padding: 20px 10px; font-size: 18px; font-weight: 700">Nhà cung cấp bán chạy nhất<br /> @nccnn</div>
+            <div class="btn btn-success col-md-2" style="padding: 20px 10px; font-size: 18px; font-weight: 700">Tổng doanh thu<br /> @website.Models.conver.ConvertToThousand64_From_Float(ViewBag.tong) VNĐ</div>
+            <div class="btn btn-danger col-md-2" style="padding: 20px 10px; font-size: 18px; font-weight: 700">Tổng sản phẩm đã bán<br /> @ViewBag.tongsp</div>
+            <div class="btn btn-warning col-md-2" style="padding: 20px 10px; font-size: 18px; font-weight: 700">Tổng doanh thu trong ngày<br /> @website.Models.conver.ConvertToThousand64_From_Float(ViewBag.tonghn) VNĐ</div>
+        </div>
+        <div class="row" style=" display: flex; justify-content: center; padding: 10px 25px;font-size:28px;font-weight:700 ">
+            Thống kê doanh thu theo sản phẩm
+        </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table" style="table-layout: fixed">
+                <thead>
+                    <tr class="text-center">
+                        <th>Số thứ tự</th>
+                        <th>Tên sản phẩm</th>
+                        <th>
+                            Hình ảnh
+                        </th>
+                        <th>
+                            Giá gốc
+                        </th>
+                        <th>
+                            Giá bán
+                        </th>
+                        <th>
+                            Nhà cung cấp
+                        </th>
+                        <th>
+                            Danh mục
+                        </th>
+                        <th>
+                            Tổng sl đã bán
+                        </th>
+                        <th>
+                            Tổng doanh thu
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (lstdh.Select(g=>g.IdSP).Contains(item.Id))
+                        {
+                            stt++;
+                            var gia = item.GiaGoc;
+                            decimal tile = Convert.ToDecimal(km.FirstOrDefault(g => g.Id == item.IdKM).TiLeKM);
+                            <tr class="text-center">
+                                <td>
+                                    @stt
+                                </td>
+                                <td style=" white-space: initial; overflow: hidden;">
+                                    @item.TenSP
+                                </td>
+                                <td>
+                                    <img src="~/Upload/SanPham/@item.HinhAnh.Split(',')[0]" height="100" />
+                                </td>
+                                <td>
+                                    @website.Models.conver.ConvertToThousand64_From_Float(gia) VNĐ
+                                </td>
+                                <td>
+                                    @website.Models.conver.ConvertToThousand64_From_Float(item.GiaGoc * (100 - tile) / 100) VNĐ
+                                </td>
+                                <td>
+                                    @ncc.FirstOrDefault(g => g.Id == item.IdNCC).TenNCC
+                                </td>
+                                <td>
+                                    @dm.FirstOrDefault(g => g.Id == item.IdDM).TenDM
+                                </td>
+                                <td>
+                                    @website.Models.conver.ConvertToThousand64_From_Float(lstdh.Where(g => g.IdSP == item.Id ).Sum(g => g.SoLuong))
+                                </td>
+                                <td>
+                                    @website.Models.conver.ConvertToThousand64_From_Float(lstdh.Where(g => g.IdSP == item.Id).Sum(g => g.SoLuong) * gia * (100 - tile) / 100) VNĐ
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <ul class="pagination" style="float:right;margin-right:20px">
+
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <li>
+                        <a class="page-link @(Convert.ToInt32(ViewBag.pageNumber)==i?"active1":"")" href="@Url.Action("Index", new { page = i ,id=ViewBag.Id})">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</div>

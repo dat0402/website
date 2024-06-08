@@ -1,0 +1,104 @@
+﻿@model website.Models.SanPham
+
+@{
+    ViewBag.Title = "Thêm sản phẩm mới";
+    var ncc = ViewData["ncc"] as List<website.Models.NCC>;
+    var dm = ViewData["dm"] as List<website.Models.DanhMucSP>;
+    var km = ViewData["km"] as List<website.Models.KhuyenMai>;
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+}
+@using (Ajax.BeginForm("Edit", "SanPham", null,
+                       new AjaxOptions
+                       {
+                           HttpMethod = "POST", // Phương thức HTTP, phải là "POST"
+                           OnSuccess = "onEditSuccess", // Tên hàm JavaScript sẽ được gọi khi thành công
+                           UpdateTargetId = "response", // ID của phần tử sẽ được cập nhật
+                           InsertionMode = InsertionMode.Replace // Chế độ chèn
+                       },
+                       new { enctype = "multipart/form-data" } // Thuộc tính bổ sung cho form
+                      ))
+{
+    <div class="dialog-model"></div>
+    <div class="dialog-content">
+        <div class="dialog-header">
+            <div class="header-content">THÔNG TIN SẢN PHẨM</div>
+        </div>
+        <input name="Id" value="@Model.Id" hidden />
+        <input name="NgayDang" value="@Model.NgayDang" hidden />
+        <input name="HinhAnh" value="@Model.HinhAnh" hidden />
+        <div class="dialog-main">
+            <div class="dialog-grid">
+                <div class="dialog-grid-center">
+                    <div class="grid-title">
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Tên sản phẩm(<span style="color: red">*</span>)</label>
+                        @Html.EditorFor(model => model.TenSP, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TenSP, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="infor-details">
+                        <label for="txthoTen">Hình ảnh sản phẩm(<span style="color: red">*</span>)</label>
+                        <input type="file" name="HinhAnh" class="form-control" multiple />
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Giá gốc(<span style="color: red">*</span>)</label>
+                        @Html.EditorFor(model => model.GiaGoc, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.GiaGoc, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Nhà cung cấp(<span style="color: red">*</span>)</label>
+                        <select name="IdNCC" id="IdNCC" class="form-control">
+                            @foreach (var item in ncc)
+                            {
+                                <option value="@item.Id" @(Model.IdNCC == item.Id ? "selected" : "")>@item.TenNCC</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Danh mục sản phẩm(<span style="color: red">*</span>)</label>
+                        <select name="IdDM" id="IdDM" class="form-control">
+                            @foreach (var item in dm)
+                            {
+                                <option value="@item.Id" @(Model.IdDM == item.Id ? "selected" : "")>@item.TenDM</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Khuyến mại(<span style="color: red">*</span>)</label>
+                        <select name="IdKM" id="IdKM" class="form-control">
+                            @foreach (var item in km)
+                            {
+                                <option value="@item.Id" @(Model.IdKM == item.Id ? "selected" : "")>@item.MaKM - @item.TiLeKM %</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Đơn vị tính(<span style="color: red">*</span>)</label>
+                        @Html.EditorFor(model => model.DonViTinh, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DonViTinh, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Mô tả(<span style="color: red">*</span>)</label>
+                        <textarea rows="10" name="MoTa" id="MoTa" class="form-control">@Model.MoTa</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-footer">
+            <a class="btn btn-success" style="color:white" onclick="closedialog()">Hủy</a> &nbsp;
+            <button class="btn btn-primary" type="submit">Lưu</button>
+        </div>
+    </div>
+
+}
+<script>
+    if ($('#MoTa').length > 0) {
+        CKEDITOR.replace("MoTa", {
+            language: 'vi',
+            filebrowserBrowseUrl: "/Areas/Admin/assets/js/ckfinder/ckfinder.html",
+            filebrowserImageBrowseUrl: '/Areas/Admin/assets/js/ckfinder/ckfinder.html?Type=Images',
+            filebrowserFlashBrowseUrl: '/Areas/Admin/assets/js/ckfinder/ckfinder.html?Type=Flash',
+            height: 300
+        });
+    }
+</script>

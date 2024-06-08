@@ -1,0 +1,167 @@
+﻿@using website.Models
+@model ThongTin
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Cart cart = Session["Cart"] as Cart;
+    var km = ViewData["km"] as List<KhuyenMai>;
+    var ncc = ViewData["ncc"] as List<website.Models.NCC>;
+    var tong = 0;
+}
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <ul>
+                <li class="home"> <a href="/" title="Trở lại trang chủ">Trang chủ</a><span>&mdash;›</span></li>
+                <li class=""> <a>Giỏ hàng</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:10px">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-8">
+        <div class="cart wow">
+            <div class="page-title">
+                <h2>Giỏ hàng chi tiết</h2>
+            </div>
+            <div class="table-responsive">
+                <fieldset>
+                    <table class="data-table cart-table" id="shopping-cart-table">
+                        <thead>
+                            <tr class="first last">
+                                <th rowspan="1">Sản phẩm</th>
+                                <th rowspan="1"><span class="nobr">Hình ảnh</span></th>
+                                <th rowspan="1">Nhà CC</th>
+                                <th colspan="1" class="a-center"><span class="nobr">Đơn giá</span></th>
+                                <th class="a-center" rowspan="1">Số lượng</th>
+                                <th colspan="1" class="a-center">Tổng tiền</th>
+                                <th rowspan="1"></th>
+                                <th class="a-center" rowspan="1">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr class="first last">
+                                <td class="a-right last" colspan="50">
+                                    <a class="button btn-continue" href="/Home/Index"><span><span>Tiếp tục mua sắm</span></span></a>
+                                    <a id="empty_cart_button" class="button btn-empty" href="/Home/XoaGH"><span><span>Xóa giỏ hàng</span></span></a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var item in cart.Items)
+                            {
+                                var tyle = km.FirstOrDefault(g => g.Id == item.product.IdKM).TiLeKM;
+                                <tr class="first odd">
+                                    <td>@item.product.TenSP</td>
+                                    <td class="image"><a class="product-image" href="/chi-tiet-san-pham?id=@item.product.Id"><img width="75" src="~/Upload//SanPham/@item.product.HinhAnh.Split(',')[0]"></a></td>
+                                    <td class="a-center">
+                                        @ncc.FirstOrDefault(g => g.Id == item.product.IdNCC).TenNCC
+                                    </td>
+                                    <td class="a-right"><span class="cart-price"> <span class="price">@website.Models.conver.ConvertToThousand64_From_Float(item.Gia * (100 - tyle) / 100) đ</span> </span></td>
+                                    <td class="a-center movewishlist"><input maxlength="12" class="input-text qty" type="number" title="Qty" size="4" value="@item.Quantity" name="SoLuong"></td>
+                                    <td class="a-right movewishlist"><span class="cart-price"> <span class="price">@website.Models.conver.ConvertToThousand64_From_Float(Convert.ToInt32(item.Gia) * Convert.ToInt32(item.Quantity) * (100 - tyle) / 100) đ</span> </span></td>
+                                    <td class="a-center"><a title="Xem chi tiết sản phẩm" class="edit-bnt" href="/chi-tiet-san-pham?id=@item.product.Id"></a></td>
+                                    <td class="a-center last"><a class="button remove-item" onClick="xoagh(@item.product.Id)" title="Remove item" href="#"><span><span>Xóa </span></span></a></td>
+                                </tr>
+                                tong += Convert.ToInt32(item.Gia * (100 - tyle) / 100) * Convert.ToInt32(item.Quantity);
+                            }
+
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+            <!-- BEGIN CART COLLATERALS -->
+            @using (Ajax.BeginForm("DatHang", "Home", null,
+       new AjaxOptions
+       {
+           HttpMethod = "Post",
+           OnSuccess = "dathang",
+           UpdateTargetId = "response",
+           InsertionMode = InsertionMode.Replace,
+       },
+       new { enctype = "multipart/form-data" }
+       ))
+            {
+                <form action="/Home/DatHang" method="Get">
+                    <div class="cart-collaterals row">
+                        <div class="col-sm-4">
+                            <div class="shipping">
+                                <h3>Thông tin người nhận hàng</h3>
+                                <div class="shipping-form">
+                                    <p>Nhập thông tin địa chỉ đầy đủ.</p>
+                                    <ul class="form-list">
+                                        <li>
+                                            <label for="postcode">Số điện thoại</label>
+                                            <div class="input-box">
+                                                <input type="text" value="@(Model != null ? Model.SDT : "")" name="SDT" class="input-text">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label for="postcode">Địa chỉ</label>
+                                            <div class="input-box">
+                                                <input type="text" value="@(Model != null ? Model.DiaChi : "")" name="DiaChi" class="input-text">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label for="region_id">Chọn hình thức thanh toán</label>
+                                            <br />
+                                            <select class="form-select form-select-sm mb-3 input-text required-entry" name="HinhThuc">
+                                                <option value="" selected>-- Chọn hình thức thanh toán --</option>
+                                                <option value="1" selected>Thanh toán khi nhận hàng</option>
+                                            </select>
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+
+                        </div>
+                        <div class="totals col-sm-4">
+                            <h3>Thanh toán</h3>
+                            <div class="inner">
+                                <table class="table shopping-cart-table-total" id="shopping-cart-totals-table">
+                                    <colgroup>
+                                        <col>
+                                        <col width="1">
+                                    </colgroup>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="1" class="a-left" style=""><strong>Tổng tiền</strong></td>
+                                            <td class="a-right" style=""><strong><span class="price" id="tt">@conver.ConvertToThousand64_From_Float(tong) đ</span></strong> <input name="TongTien" value="@tong" id="tien" hidden /></td>
+
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <ul class="checkout">
+                                    <li>
+                                        <button class="button btn-proceed-checkout" title="Proceed to Checkout" type="submit"><span>Đặt hàng</span></button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--inner-->
+
+                        </div>
+                    </div>
+                </form>
+            }
+
+
+                <!--cart-collaterals-->
+
+            </div>
+
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script>
+    const VND = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
+</script>

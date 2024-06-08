@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "LienHe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ncc = ViewData["ncc"] as List<website.Models.NCC>;
+    var stt = 0;
+
+}
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <ul>
+                <li class="home"> <a href="/" title="Trở lại trang chủ">Trang chủ</a><span>&mdash;›</span></li>
+                <li class=""> <a>Nhà cung cấp</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="fa-align-center" style="width:50%; margin:0 25%">
+        <table class="table" style="table-layout: fixed">
+            <caption style="text-align:center">DANH SÁCH NHÀ CUNG CẤP</caption>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên nhà cung cấp</th>
+                    <th>Địa chỉ nhà cung cấp</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ncc)
+                {
+                    stt++;
+                    <tr>
+                        <td>@stt</td>
+                        <td>@item.TenNCC</td>
+                        <td>@item.DiaChi</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

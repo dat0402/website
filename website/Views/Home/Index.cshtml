@@ -1,0 +1,411 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var sp = ViewData["sanpham"] as List<website.Models.SanPham>;
+    var danhmuc = ViewData["danhmuc"] as List<website.Models.DanhMucSP>;
+    var km = ViewData["km"] as List<website.Models.KhuyenMai>;
+    var tintuc = ViewData["tintuc"] as List<website.Models.TinTuc>;
+    var ncc = ViewData["ncc"] as List<website.Models.NCC>;
+
+}
+<div id="magik-slideshow" class="magik-slideshow">
+    <div class="wow">
+        <div id='rev_slider_4_wrapper' class='rev_slider_wrapper fullwidthbanner-container'>
+            <div id='rev_slider_4' class='rev_slider fullwidthabanner'>
+                <ul>
+                    <li data-transition='random' data-slotamount='7' data-masterspeed='1000'>
+                        <img src="~/Upload/Banner/tim-hieu-sat-thep-la-gi.jpg" data-bgposition='left top' data-bgfit='cover' data-bgrepeat='no-repeat' alt="banner" />
+                    </li>
+                </ul>
+                <div class="tp-bannertimer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end Slider -->
+<!-- header service -->
+<div class="header-service">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-sm-6 col-xs-12">
+                <div class="content">
+                    <div class="icon-bookmark">&nbsp;</div>
+                    <span><strong>SẢN PHẨM CHẤT LƯỢNG</strong></span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-xs-12">
+                <div class="content">
+                    <div class="icon-money">&nbsp;</div>
+                    <span><strong>VẬN CHUYỂN TOÀN QUỐC</strong></span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-xs-12">
+                <div class="content">
+                    <div class="icon-dis">&nbsp;</div>
+                    <span><strong class="orange">ĐẢM BẢO CHẤT LƯỢNG</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="offer-banner-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4 wow"><a href="/"><img alt="offer banner1" src="~/Images/bao-gia-cat-cnc-thep-tam-theo-yeu-cau-2.jpg" style="width:100%"></a></div>
+            <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4 wow"><a href="/"><img alt="offer banner1" src="~/Images/Screenshot_2.png" style="width:100%"></a></div>
+            <div class="col-lg-4 col-xs-12 col-md-4 col-sm-4 wow"><a href="/"><img alt="offer banner1" src="~/Images/anh-dai-dien-hop-tac-gia-cong-co-khi.jpg" style="width:100%"></a></div>
+        </div>
+    </div>
+</div>
+<section class="main-container col1-layout home-content-container">
+    <div class="container">
+        <div class="row">
+            <div class="std">
+                <div class="col-lg-8 col-xs-12 col-sm-8 best-seller-pro wow">
+                    <div class="slider-items-products">
+                        <div class="new_title center">
+                            <h2>Giá Tốt Nhất</h2>
+                        </div>
+                        <div id="best-seller-slider" class="product-flexslider hidden-buttons">
+                            <div class="slider-items slider-width-col4">
+                                @foreach (var item in sp.OrderBy(g=>g.GiaGoc).Take(5))
+                                {
+                                    decimal khuyenmai =Convert.ToDecimal(km.FirstOrDefault(g => g.Id == item.IdKM).TiLeKM);
+                                    <div class="item">
+                                        <div class="col-item">
+                                            @if (khuyenmai > 0)
+                                            {
+                                                <div class="sale-label sale-top-right">-@khuyenmai%</div>
+
+                                            }
+                                            <div class="images-container">
+                                                <a class="product-image" title="@item.TenSP" href="/chi-tiet-san-pham?id=@item.Id"> <img src="~/Upload/SanPham/@item.HinhAnh.Split(',')[0]" class="img-responsive" alt="product-image" style="height:150px" /> </a>
+                                                <div class="actions">
+                                                    <a href="/chi-tiet-san-pham?id=@item.Id" style="color:white;font-size:14px">Xem chi tiết</a>
+                                                </div>
+                                            </div>
+                                            <div class="info">
+                                                <div class="info-inner">
+                                                    <div class="item-title">
+                                                        <p style="color:red; ">id : @item.Id</p>
+                                                        <a title=" Sample Product" href="/chi-tiet-san-pham?id=@item.Id">@item.TenSP</a>
+                                                    </div>
+                                                    <!--item-title-->
+                                                    <div class="item-content">
+                                                        <div class="ratings">
+                                                            <div class="rating-box">
+                                                                <div style="width:90%" class="rating"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="price-box">
+                                                            @if (khuyenmai > 0)
+                                                            {
+                                                                <p class="special-price"> <span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc * (100 - khuyenmai) / 100) VNĐ</span> </p>
+                                                                <br />
+
+                                                                <p class="old-price"><span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc) VNĐ </span> </p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="special-price"> <span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc) VNĐ </span> </p>
+
+                                                            }
+                                                        </div>
+                                                        <div>Nhà cung cấp: @ncc.FirstOrDefault(g => g.Id == item.IdNCC).TenNCC</div>
+                                                    </div>
+                                              
+                                                    <!--item-content-->
+                                                </div>
+                                                <div class="clearfix"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xs-12 col-sm-4 wow latest-pro small-pr-slider">
+                    <div class="slider-items-products">
+                        <div class="new_title center">
+                            <h2>Sản phẩm mới nhất</h2>
+                        </div>
+                        <div id="latest-deals-slider" class="product-flexslider hidden-buttons latest-item">
+                            <div class="slider-items slider-width-col4">
+                                @foreach (var item in sp.OrderByDescending(g => g.NgayDang).Take(4))
+                                {
+                                    decimal khuyenmai = Convert.ToDecimal(km.FirstOrDefault(g => g.Id == item.IdKM).TiLeKM);
+                                    <div class="item">
+                                        <div class="col-item">
+                                            @if (khuyenmai > 0)
+                                            {
+                                                <div class="sale-label sale-top-right">-@khuyenmai%</div>
+
+                                            }
+                                            <div class="images-container">
+                                                <a class="product-image" title="@item.TenSP" href="/chi-tiet-san-pham?id=@item.Id"> <img src="~/Upload/SanPham/@item.HinhAnh.Split(',')[0]" class="img-responsive" alt="product-image" style="height:100px" /> </a>
+                                                <div class="actions">
+                                                    <a href="/chi-tiet-san-pham?id=@item.Id" style="color:white;font-size:14px">Xem chi tiết</a>
+                                                </div>
+                                            </div>
+                                            <div class="info">
+                                                <div class="info-inner">
+                                                    <div class="item-title">
+                                                        <p style="color:red; ">id : @item.Id</p>
+                                                        <a title=" Sample Product" href="/chi-tiet-san-pham?id=@item.Id">@item.TenSP</a>
+                                                    </div>
+                                                    <!--item-title-->
+                                                    <div class="item-content">
+                                                        <div class="ratings">
+                                                            <div class="rating-box">
+                                                                <div style="width:90%" class="rating"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="price-box">
+                                                            @if (khuyenmai > 0)
+                                                            {
+                                                                <p class="special-price"> <span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc * (100 - khuyenmai) / 100) VNĐ</span> </p>
+                                                                <br />
+
+                                                                <p class="old-price"><span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc) VNĐ </span> </p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="special-price"> <span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc) VNĐ </span> </p>
+
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div> @ncc.FirstOrDefault(g => g.Id == item.IdNCC).TenNCC</div>
+
+                                                    <!--item-content-->
+                                                </div>
+                                                <div class="clearfix"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="main-container col1-layout home-content-container">
+    <div class="container">
+        <div class="row">
+            <div class="std">
+                <div class="col-lg-12 col-xs-12 col-sm-8 best-seller-pro wow">
+                    <div class="slider-items-products">
+                        <div class="new_title center">
+                            <h2>Tất cả sản phẩm</h2>
+                        </div>
+                        <div id="best-seller-slider" class="product-flexslider hidden-buttons">
+                            <div class="slider-items slider-width-col3">
+                                @{
+                                    foreach (var item in sp)
+                                    {
+                                        decimal khuyenmai = Convert.ToDecimal(km.FirstOrDefault(g => g.Id == item.IdKM).TiLeKM);
+                                        <div class="item">
+                                                                            <div class="col-item">
+                                                                                @if (khuyenmai > 0)
+                                                                                {
+                                                                                    <div class="sale-label sale-top-right">-@khuyenmai%</div>
+
+                                                                                }
+                                                                                <div class="images-container">
+                                                                                    <a class="product-image" title="@item.TenSP" href="/chi-tiet-san-pham?id=@item.Id"> <img src="~/Upload/SanPham/@item.HinhAnh.Split(',')[0]" class="img-responsive" alt="product-image" style="height:200px" /> </a>
+                                                                                    <div class="actions">
+                                                                                        <a href="/chi-tiet-san-pham?id=@item.Id" style="color:white;font-size:14px">Xem chi tiết</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="info">
+                                                                                    <div class="info-inner">
+                                                                                        <div class="item-title">
+                                                                                            <p style="color:red; ">id : @item.Id</p>
+                                                                                            <a title=" Sample Product" href="/chi-tiet-san-pham?id=@item.Id">@item.TenSP</a>
+                                                                                        </div>
+                                                                                        <!--item-title-->
+                                                                                        <div class="item-content">
+                                                                                            <div class="ratings">
+                                                                                                <div class="rating-box">
+                                                                                                    <div style="width:90%" class="rating"></div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="price-box">
+                                                                                                @if (khuyenmai > 0)
+                                                                                                {
+                                                                                                    <p class="special-price"> <span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc * (100 - khuyenmai) / 100) VNĐ</span> </p>
+                                                                                                    <br />
+
+                                                                                                    <p class="old-price"><span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc) VNĐ </span> </p>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <p class="special-price"> <span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(item.GiaGoc) VNĐ </span> </p>
+
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div>Nhà cung cấp:  @ncc.FirstOrDefault(g => g.Id == item.IdNCC).TenNCC</div>
+
+                                                                                        <!--item-content-->
+                                                                                    </div>
+                                                                                    <div class="clearfix"> </div>
+                                                                                </div>
+                                                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@foreach (var k in danhmuc.Take(6))
+{
+    <section class="recommend container">
+        <div class="new-pro-slider small-pr-slider" style="overflow:visible">
+            <div class="slider-items-products">
+                <div class="new_title center">
+                    <h2>@k.TenDM</h2>
+                </div>
+
+                <div id="recommend-slider" class="product-flexslider hidden-buttons">
+                    <div class="slider-items slider-width-col3">
+                                @{var lst_SP = sp.Where(g => g.IdDM==k.Id).ToList();
+                                    foreach (var i in lst_SP)
+                                    {
+                                        decimal khuyenmai = Convert.ToDecimal(km.FirstOrDefault(g => g.Id == i.IdKM).TiLeKM);
+                                    <div class="item">
+                                                                        <div class="col-item">
+                                                                            @if (khuyenmai > 0)
+                                                                            {
+                                                                                <div class="sale-label sale-top-right">-@khuyenmai%</div>
+
+                                                                            }
+                                                                            <div class="images-container">
+                                                                                <a class="product-image" title="@i.TenSP" href="@Url.Action("ChiTietSP", "Home", new {id=i.Id})"> <img src="~/Upload/SanPham/@i.HinhAnh.Split(',')[0]" class="img-responsive" alt="product-image" style="height:150px" /> </a>
+                                                                                <div class="actions">
+                                                                                    <div class="actions-inner">
+                                                                                        <ul class="add-to-links">
+                                                                                            <li></li>
+                                                                                            <li></li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="qv-button-container"> <a href="@Url.Action("ChiTietSP", "Home", new {id=i.Id})" class="qv-e-button btn-quickview-1"><span><span>Quick View</span></span></a> </div>
+                                                                            </div>
+                                                                            <div class="info">
+                                                                                <div class="info-inner">
+                                                                                    <p style="color:red; ">id : @i.Id</p>
+                                                                                    <div class="item-title"> <a title="@i.TenSP" href="@Url.Action("ChiTietSP", "Home", new {id=i.Id})">@i.TenSP </a> </div>
+                                                                                    <div class="item-content">
+                                                                                        <div class="ratings">
+                                                                                            <div class="rating-box">
+                                                                                                <div class="rating" style="width:90%"></div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="price-box">
+                                                                                            @if (khuyenmai > 0)
+                                                                                            {
+                                                                                                <p class="special-price"> <span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(i.GiaGoc * (100 - khuyenmai) / 100) VNĐ</span> </p>
+                                                                                                <br />
+
+                                                                                                <p class="old-price"><span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(i.GiaGoc) VNĐ </span> </p>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <p class="special-price"> <span class="price">Giá bán: @website.Models.convert.ConvertToThousand64_From_Float(i.GiaGoc) VNĐ </span> </p>
+
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div>Nhà cung cấp:  @ncc.FirstOrDefault(g => g.Id == i.IdNCC).TenNCC</div>
+
+                                                                                <div class="clearfix"> </div>
+                                                                            </div>
+                                                                        </div>
+                                    </div>
+                                }
+                            }
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+}
+<div class="top-offer-banner wow">
+    <div class="container">
+        <div class="row">
+            <div class="offer-inner col-lg-12">
+                <!--newsletter-wrap-->
+                <div class="left">
+                    <div class="col-1">
+                        <div class="block-subscribe">
+                            <div class="newsletter">
+                               
+                                    <h4><span>Để lại thông tin để chúng tôi liên hệ</span></h4>
+                                    <h5>Để cập nhật những dòng máy và ưu đãi mới nhất từ chúng tôi.</h5>
+                                    <input type="text" placeholder="Nhập địa chỉ email..." class="input-text required-entry validate-email" id="newsletter1" name="email">
+                                    <button class="subscribe" title="Subscribe" type="submit"><span>Hoàn tất</span></button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="latest-blog container wow">
+    <div class="blog-title">
+        <h2><span>Tin tức mới nhất</span></h2>
+    </div>
+    <div class="row">
+        @foreach (var i in tintuc)
+        {
+            <div class="col-xs-12 col-sm-4">
+                <div class="blog-img">
+                    <img src="~/Upload/TinTuc/@i.AnhDaiDien" alt="Image">
+                </div>
+                <h3><a href="/chi-tiet-tin-tuc?id=@i.Id">@i.TieuDe</a> </h3>
+                <div class="post-date"><i class="icon-calendar"></i> @i.NgayDang.Value.ToString("dd/MM/yyyy")</div>
+            </div>
+        }
+    </div>
+</section>
+<script>
+    function duyet(res) {
+        if (res.status) {
+            if (res.message != undefined) {
+                $('p#notify').text(res.message);
+                $('.message-box').css("background-color", "white");
+                $('.message-header').css("background-color", "#ad0800");
+                $('.message-model').show();
+                $('.message-model').hide(4000);
+                $("#responsive").hide();
+                $('#newsletter1').val("");
+            }
+        } else {
+            if (res.message != undefined) {
+                $('p#notify').text(res.message);
+                $('.message-box').css("background-color", "white");
+                $('.message-model').show();
+                $('.message-model').hide(4000);
+            }
+        }
+    }
+</script>

@@ -1,0 +1,25 @@
+﻿@model website.Models.TinTuc
+@{
+    ViewBag.Title = "GioiThieu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <ul>
+                <li class="home"> <a href="/" title="Trở lại trang chủ">Trang chủ</a><span>&mdash;›</span></li>
+                <li class=""> <a>Tin Tức</a><span>&mdash;›</span></li>
+                <li><a>@Model.TieuDe</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-8">
+        @Html.Raw(Model.NoiDung)
+    </div>
+</div>
+

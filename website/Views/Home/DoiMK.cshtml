@@ -1,0 +1,61 @@
+﻿@model website.Models.TaiKhoan
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="main-container col1-layout">
+    <div class="main container">
+        <div class="account-login">
+            <div class="page-title">
+                <h2>Thông tin mật khẩu</h2>
+            </div>
+            <fieldset class="col2-set" >
+                @using (Ajax.BeginForm("DoiMK", "Home", null,
+                       new AjaxOptions
+                       {
+                           HttpMethod = "Post",
+                           OnSuccess = "doimk",
+                           UpdateTargetId = "response",
+                           InsertionMode = InsertionMode.Replace,
+                       },
+                       new { enctype = "multipart/form-data" }
+                       ))
+                {
+                    <div class="col-2 registered-users"style="float:left!important">
+                        <strong>Đổi mật khẩu</strong>
+                        <div class="content">
+                            <ul class="form-list">
+                                <li>
+                                    <label for="email">Mật khẩu cũ <span class="required">*</span></label>
+                                    <br>
+                                    <input type="password" title="Email của bạn" class="input-text required-entry" value="" name="PassCu">
+                                </li>
+                                <li>
+                                    <label for="pass">Mật khẩu mới<span class="required">*</span></label>
+                                    <br>
+                                    <input type="password" class="input-text required-entry validate-password" name="MatKhau">
+                                </li>
+                                <li>
+                                    <label for="pass">Xác nhận mật khẩu<span class="required">*</span></label>
+                                    <br>
+                                    <input type="password" class="input-text required-entry validate-password" name="MatKhauNew">
+                                </li>
+                            </ul>
+                            <p class="required"></p>
+                            <div class="buttons-set">
+                                <button id="send2" name="send" type="submit" class="button"><span>Đổi mật khẩu</span></button>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </fieldset>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+</section>

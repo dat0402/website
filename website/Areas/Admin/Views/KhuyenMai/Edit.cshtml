@@ -1,0 +1,52 @@
+﻿@model website.Models.KhuyenMai
+
+@{
+    ViewBag.Title = "Sửa khuyến mại";
+}
+@using (Ajax.BeginForm("Edit", "KhuyenMai", null,
+                       new AjaxOptions
+                       {
+                           HttpMethod = "Post",
+                           OnSuccess = "onAddSuccess",
+                           UpdateTargetId = "response",
+                           InsertionMode = InsertionMode.Replace,
+                       },
+                       new { enctype = "multipart/form-data" }
+                       ))
+{
+    <div class="dialog-model"></div>
+    <div class="dialog-content">
+        <div class="dialog-header">
+            <div class="header-content">THÔNG TIN KHUYẾN MẠI</div>
+        </div>
+        <input name="Id" value="@Model.Id" hidden />
+        <div class="dialog-main">
+            <div class="dialog-grid">
+                <div class="dialog-grid-center">
+                    <div class="grid-title">
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Mã khuyến mại(<span style="color: red">*</span>)</label>
+                        @Html.EditorFor(model => model.MaKM, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MaKM, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Tỉ lệ khuyến mại(<span style="color: red">*</span>)</label>
+                        @Html.EditorFor(model => model.TiLeKM, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TiLeKM, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="infor-details">
+                        <label for="txtmaKH">Điều kiện(<span style="color: red">*</span>)</label>
+                        @Html.EditorFor(model => model.DieuKien, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DieuKien, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dialog-footer">
+            <a class="btn btn-success" style="color:white" onclick="closedialog()">Hủy</a> &nbsp;
+            <button class="btn btn-primary" type="submit">Lưu</button>
+        </div>
+    </div>
+
+}
